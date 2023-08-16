@@ -5,6 +5,9 @@ import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 dotenv.config();
 
+import userRouter from "./routes/user.js";
+import itemsRouter from "./routes/items.js";
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -25,10 +28,9 @@ const connectDatabase = async () => {
 	});
 };
 
-import userRouter from "./routes/user.js";
-
 const defineRoutes = () => {
 	app.use("/api/users", userRouter);
+	app.use("/api/items", itemsRouter);
 	app.use("*", (req, res) =>
 		res.status(404).json({ error: "Endpoint not found." })
 	);

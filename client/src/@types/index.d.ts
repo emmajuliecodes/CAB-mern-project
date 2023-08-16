@@ -1,8 +1,19 @@
-interface User {
-	_id: string;
-	email: string;
-	password: string;
-	username: string;
+export interface NotOk {
+	error: string;
 }
 
-type Users = User[];
+export interface User {
+	_id: string;
+	email: string;
+	username: string;
+	createdAt: string;
+}
+
+export interface Item {
+	_id: string;
+	item: string;
+	available: boolean;
+	owner: string | User;
+}
+
+export type Users = User[];
