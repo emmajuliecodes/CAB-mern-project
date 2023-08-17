@@ -7,6 +7,7 @@ import UserCard from "./components/UserCard";
 
 function App() {
 	const baseURL = import.meta.env.VITE_SERVER_BASE as string;
+	console.log(baseURL, "baseurl");
 	const [users, setUsers] = useState<Users>([]);
 
 	useEffect(() => {

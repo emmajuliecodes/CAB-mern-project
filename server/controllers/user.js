@@ -8,6 +8,7 @@ const testResponse = (req, res) => {
 const findAllUsers = async (request, response) => {
 	try {
 		const users = await UserModel.find().populate("items");
+		console.log(users, "users");
 		if (users) {
 			const forFront = [];
 			users.forEach((user) =>
@@ -24,6 +25,7 @@ const findAllUsers = async (request, response) => {
 			response.status(404).json({ error: "nothing in collection" });
 		}
 	} catch (e) {
+		console.log(e, "e");
 		response.status(500).json({ error: "Something went wrong..." });
 	}
 };
