@@ -1,12 +1,11 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-
 import * as dotenv from "dotenv";
-dotenv.config();
-
 import userRouter from "./routes/user.js";
 import itemsRouter from "./routes/items.js";
+import configureCloudinary from "./config/cloudinary.js";
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -19,6 +18,7 @@ const connectMiddlewares = () => {
 		})
 	);
 	app.use(cors());
+	configureCloudinary();
 };
 
 const connectDatabase = async () => {

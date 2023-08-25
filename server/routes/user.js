@@ -1,4 +1,6 @@
 import express from "express";
+import { multerUpload } from "../middlewares/multer.js";
+
 import {
 	testResponse,
 	findAllUsers,
@@ -13,9 +15,7 @@ userRouter.get("/testing", testResponse);
 userRouter.get("/all", findAllUsers);
 userRouter.get("/email/:email", findUserByEmail);
 
-userRouter.post("/new", createUser);
-userRouter.post("/update", updateUser);
-
-userRouter.post("/");
+userRouter.post("/new", multerUpload.single("image"), createUser);
+userRouter.post("/update", multerUpload.single("image"), updateUser);
 
 export default userRouter;

@@ -8,6 +8,7 @@ export interface User {
 	username: string;
 	createdAt: string;
 	items: Items[];
+	avatar: string;
 }
 
 export interface Item {

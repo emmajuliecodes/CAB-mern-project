@@ -12,18 +12,19 @@ function CreateUserForm({
 	const [email, setEmail] = useState("");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
 	const createUser = async () => {
-		const myHeaders = new Headers();
-		myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-		const urlencoded = new URLSearchParams();
-		urlencoded.append("email", email);
-		urlencoded.append("password", password);
-		urlencoded.append("username", username);
+		const formData = new FormData();
+		formData.append("email", email);
+		formData.append("password", password);
+		formData.append("username", username);
+		if (avatarFile) {
+			formData.append("image", avatarFile);
+		}
 		const requestOptions = {
 			method: "POST",
-			headers: myHeaders,
-			body: urlencoded,
+			body: formData,
 		};
 		try {
 			const response = await fetch(`${baseURL}api/users/new`, requestOptions);
@@ -43,10 +44,10 @@ function CreateUserForm({
 		}
 	};
 
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		console.log({ email, username, password });
-		await createUser();
+		createUser().catch((e) => console.log(e)); // found this as an alternative to disabling eslint rule
 	};
 
 	return (
@@ -58,18 +59,27 @@ function CreateUserForm({
 				placeholder="email"
 				onChange={(e) => setEmail(e.target.value)}
 			/>{" "}
+			<br></br>
 			<input
 				type="username"
 				value={username}
 				placeholder="username"
 				onChange={(e) => setUsername(e.target.value)}
 			/>{" "}
+			<br></br>
 			<input
 				type="password"
 				value={password}
 				placeholder="password"
 				onChange={(e) => setPassword(e.target.value)}
 			/>{" "}
+			<br></br>
+			<input
+				type="file"
+				onChange={(e) => {
+					e.target.files && setAvatarFile(e.target.files[0]);
+				}}
+			/>
 			<br></br>
 			<button>Create!</button>
 		</form>

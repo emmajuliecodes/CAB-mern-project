@@ -1,11 +1,11 @@
+import "../App.css";
+
 import { useState, useEffect } from "react";
+import { NotOk, Users } from "../@types";
+import UserCard from "../components/UserCard";
+import CreateUserForm from "../components/CreateUserForm";
 
-import "./App.css";
-import { NotOk, Users } from "./@types";
-import CreateUserForm from "./components/CreateUserForm";
-import UserCard from "./components/UserCard";
-
-function App() {
+function AppUsers() {
 	const baseURL = import.meta.env.VITE_SERVER_BASE as string;
 	console.log(baseURL, "baseurl");
 	const [users, setUsers] = useState<Users>([]);
@@ -57,4 +57,4 @@ function App() {
 	);
 }
 
-export default App;
+export default AppUsers;

@@ -1,4 +1,5 @@
 import { UserModel } from "../models/user.js";
+import { imageUpload } from "../utilities/imageManagement.js";
 
 const testResponse = (req, res) => {
 	console.log(req);
@@ -18,6 +19,7 @@ const findAllUsers = async (request, response) => {
 					createdAt: user.createdAt,
 					_id: user._id,
 					items: user.items,
+					avatar: user.avatar,
 				})
 			);
 			response.status(200).json(forFront);
@@ -61,7 +63,8 @@ const createUser = async (req, res) => {
 		res.status(400).json({ error: "All fields must be filled out" });
 		return;
 	}
-	const newUser = new UserModel({ email, password, username });
+	const result = await imageUpload(req.file, "user_avatars");
+	const newUser = new UserModel({ email, password, username, avatar: result });
 	try {
 		const result = await newUser.save();
 		const forFront = {
@@ -69,6 +72,7 @@ const createUser = async (req, res) => {
 			username: result.username,
 			_id: result._id,
 			createdAt: result.createdAt,
+			avatar: user.avatar,
 		};
 		res.status(200).json(forFront);
 	} catch (e) {

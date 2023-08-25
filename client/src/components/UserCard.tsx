@@ -10,7 +10,12 @@ function UserCard({ user }: Props) {
 			<div
 				style={{ border: "solid 1px black", padding: "0 1em", width: "300px" }}>
 				<p>
-					<b>{user.username}</b> - {user.email}
+					<b>{user.username}</b> - {user.email} <b>{user.username}</b> -{" "}
+					<img
+						src={user.avatar}
+						alt={`${user.username}'s avatar`}
+						style={{ height: "50px", width: "50px" }}
+					/>
 				</p>
 				{user.items.length === 0 ? (
 					<p>User has no items</p>
