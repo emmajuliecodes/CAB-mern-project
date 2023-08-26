@@ -19,3 +19,4 @@ export interface Item {
 }
 
 export type Users = User[];
+export type Items = Item[];

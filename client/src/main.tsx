@@ -8,6 +8,7 @@ import Home from "./views/Home.tsx";
 import WithNav from "./components/Layouts/WithNav.tsx";
 import Login from "./views/Login.tsx";
 import AppUsers from "./views/AppUsers.tsx";
+import Listings from "./views/Listings.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
 			{
 				path: "/",
 				element: <Home />,
+			},
+			{
+				path: "/listings",
+				element: <Listings />,
 			},
 			{
 				path: "/users",
