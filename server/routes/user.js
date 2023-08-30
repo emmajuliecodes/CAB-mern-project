@@ -10,6 +10,7 @@ import {
 	updateUser,
 	getMe,
 	login,
+	updatePassword,
 } from "../controllers/user.js";
 
 const userRouter = express.Router();
@@ -22,5 +23,6 @@ userRouter.get("/me", jwtAuth, getMe);
 userRouter.post("/new", multerUpload.single("image"), createUser);
 userRouter.post("/update", multerUpload.single("image"), updateUser);
 userRouter.post("/login", login);
+userRouter.post("/updatePassword", jwtAuth, updatePassword);
 
 export default userRouter;

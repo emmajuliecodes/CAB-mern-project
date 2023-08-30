@@ -73,6 +73,7 @@ const createUser = async (req, res) => {
 		username,
 		avatar: result,
 	});
+
 	try {
 		const result = await newUser.save();
 		const forFront = {
@@ -108,7 +109,8 @@ const updateUser = async (req, res) => {
 };
 
 const updatePassword = async (req, res) => {
-	const { password: stringPassword, _id } = req.body;
+	const _id = req.user._id;
+	const { password: stringPassword } = req.body;
 	try {
 		const hashedPassword = await encryptPassword(stringPassword);
 		console.log(stringPassword, _id, hashedPassword);
@@ -129,10 +131,12 @@ const login = async (req, res) => {
 		const existingUser = await UserModel.findOne({ email });
 		if (!existingUser)
 			return res.status(404).json({ error: "No user with that email." });
+
 		const verified = await verifyPassword(password, existingUser.password);
 		if (!verified)
 			return res.status(401).json({ error: "Password doesn't match." });
 		const token = generateToken(existingUser);
+
 		const forFront = {
 			email: existingUser.email,
 			username: existingUser.username,

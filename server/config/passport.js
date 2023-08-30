@@ -9,6 +9,8 @@ const options = {
 	secretOrKey: process.env.JWT_SECRET,
 };
 
+// console.log(options, "options");
+
 const callback = async (jwt_payload, done) => {
 	try {
 		const foundUser = await UserModel.findById(jwt_payload.sub);
@@ -22,5 +24,7 @@ const callback = async (jwt_payload, done) => {
 const configurePassport = () => {
 	passport.use(new JwtStrategy(options, callback));
 };
+
+// console.log(configurePassport, "configure passport");
 
 export default configurePassport;

@@ -1,11 +1,17 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { NotOk, User } from "../@types";
+import { useNavigate } from "react-router-dom";
 
 interface DefaultValue {
 	user: null | User;
 	login: (email: string, password: string) => Promise<void>;
 	logout: () => void;
 }
+
+// interface SignupResult {
+// 	user: User;
+// 	token: string;
+// }
 
 interface LoginResult {
 	verified: boolean;
@@ -27,6 +33,7 @@ export const AuthContext = createContext<DefaultValue>(initialValue);
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 	const baseURL = import.meta.env.VITE_SERVER_BASE as string;
 	const [user, setUser] = useState<null | User>(null);
+	const redirect = useNavigate();
 
 	const login = async (email: string, password: string) => {
 		const myHeaders = new Headers();
@@ -50,6 +57,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 				setUser(result.user);
 				localStorage.setItem("token", result.token);
 				localStorage.setItem("user", JSON.stringify(result.user));
+				alert("login successful!");
+				redirect("/");
 			}
 		} catch (error) {
 			console.log("error", error);
