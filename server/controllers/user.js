@@ -1,5 +1,7 @@
 import { UserModel } from "../models/user.js";
 import { imageUpload } from "../utilities/imageManagement.js";
+import { encryptPassword, verifyPassword } from "../utilities/bcrypt.js";
+import { generateToken } from "../utilities/jwt.js";
 
 const testResponse = (req, res) => {
 	console.log(req);
@@ -64,7 +66,13 @@ const createUser = async (req, res) => {
 		return;
 	}
 	const result = await imageUpload(req.file, "user_avatars");
-	const newUser = new UserModel({ email, password, username, avatar: result });
+	const hashedPassword = await encryptPassword(password);
+	const newUser = new UserModel({
+		email,
+		password: hashedPassword,
+		username,
+		avatar: result,
+	});
 	try {
 		const result = await newUser.save();
 		const forFront = {
@@ -72,7 +80,8 @@ const createUser = async (req, res) => {
 			username: result.username,
 			_id: result._id,
 			createdAt: result.createdAt,
-			avatar: user.avatar,
+			avatar: result.avatar,
+			items: result.items,
 		};
 		res.status(200).json(forFront);
 	} catch (e) {
@@ -98,4 +107,66 @@ const updateUser = async (req, res) => {
 	}
 };
 
-export { testResponse, findAllUsers, findUserByEmail, createUser, updateUser };
+const updatePassword = async (req, res) => {
+	const { password: stringPassword, _id } = req.body;
+	try {
+		const hashedPassword = await encryptPassword(stringPassword);
+		console.log(stringPassword, _id, hashedPassword);
+		const result = await UserModel.findByIdAndUpdate(
+			_id,
+			{ password: hashedPassword },
+			{ new: true }
+		);
+		res.status(200).json({ message: "password updated!" });
+	} catch (error) {
+		res.status(500).json({ error: "Something went wrong..." });
+	}
+};
+
+const login = async (req, res) => {
+	const { email, password } = req.body;
+	try {
+		const existingUser = await UserModel.findOne({ email });
+		if (!existingUser)
+			return res.status(404).json({ error: "No user with that email." });
+		const verified = await verifyPassword(password, existingUser.password);
+		if (!verified)
+			return res.status(401).json({ error: "Password doesn't match." });
+		const token = generateToken(existingUser);
+		const forFront = {
+			email: existingUser.email,
+			username: existingUser.username,
+			_id: existingUser._id,
+			createdAt: existingUser.createdAt,
+			avatar: existingUser.avatar,
+			items: existingUser.items,
+		};
+		res.status(200).json({ verified, token, user: forFront });
+	} catch (error) {
+		res.status(500).json({ error: "Something went wrong..." });
+	}
+};
+
+const getMe = async (req, res) => {
+	// res.status(200).json(req.user) // full user, including private data
+	const forFront = {
+		email: req.user.email,
+		username: req.user.username,
+		_id: req.user._id,
+		createdAt: req.user.createdAt,
+		avatar: req.user.avatar,
+		items: req.user.items,
+	};
+	res.status(200).json(forFront); // return new object with only chosen properties
+};
+
+export {
+	testResponse,
+	findAllUsers,
+	findUserByEmail,
+	createUser,
+	updateUser,
+	login,
+	getMe,
+	updatePassword,
+};

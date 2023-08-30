@@ -5,6 +5,7 @@ import * as dotenv from "dotenv";
 import userRouter from "./routes/user.js";
 import itemsRouter from "./routes/items.js";
 import configureCloudinary from "./config/cloudinary.js";
+import configurePassport from "./config/passport.js";
 dotenv.config();
 
 const app = express();
@@ -19,6 +20,7 @@ const connectMiddlewares = () => {
 	);
 	app.use(cors());
 	configureCloudinary();
+	configurePassport();
 };
 
 const connectDatabase = async () => {

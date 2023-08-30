@@ -9,37 +9,48 @@ import WithNav from "./components/Layouts/WithNav.tsx";
 import Login from "./views/Login.tsx";
 import AppUsers from "./views/AppUsers.tsx";
 import Listings from "./views/Listings.tsx";
+import { AuthContextProvider } from "./context/AuthContext.tsx";
 
 const router = createBrowserRouter([
 	{
 		element: (
-			<WithNav>
+			<AuthContextProvider>
 				<Outlet />
-			</WithNav>
+			</AuthContextProvider>
 		),
-
+		// putting context at outermost layer of router means it still wraps every route, but is also inside the router and can then use react router dom hooks like useNavigate
 		children: [
 			{
-				path: "/",
-				element: <Home />,
+				element: (
+					<WithNav>
+						<Outlet />
+					</WithNav>
+				),
+
+				children: [
+					{
+						path: "/",
+						element: <Home />,
+					},
+					{
+						path: "/listings",
+						element: <Listings />,
+					},
+					{
+						path: "/users",
+						element: <AppUsers />,
+					},
+					{
+						path: "/login",
+						element: <Login />,
+					},
+				],
 			},
 			{
-				path: "/listings",
-				element: <Listings />,
-			},
-			{
-				path: "/users",
-				element: <AppUsers />,
-			},
-			{
-				path: "/login",
-				element: <Login />,
+				path: "*",
+				element: <Error404 />,
 			},
 		],
-	},
-	{
-		path: "*",
-		element: <Error404 />,
 	},
 ]);
 
