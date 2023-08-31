@@ -11,9 +11,17 @@ function ItemCard({ item }: Props) {
 				style={{ border: "solid 1px black", padding: "0 1em", width: "300px" }}>
 				<p>
 					{item.item}
-					<b></b>
-					{item.available}
-					<b></b>
+					<br></br>
+					<img
+						src={item.images}
+						alt={"item image"}
+						style={{ height: "50px", width: "50px" }}
+					/>
+					<br></br>
+					{item.short_description}
+					<br></br>
+
+					<button>View item</button>
 				</p>
 			</div>
 		)

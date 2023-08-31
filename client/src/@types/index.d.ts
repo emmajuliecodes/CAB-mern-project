@@ -16,7 +16,13 @@ export interface Item {
 	item: string;
 	available: boolean;
 	owner: string | User;
+	short_description: string;
+	long_description: string;
+	category: Category[];
+	offer_type: [];
+	images: string;
 }
 
 export type Users = User[];
 export type Items = Item[];
+export type Categories = Category[];

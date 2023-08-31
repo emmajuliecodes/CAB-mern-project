@@ -1,11 +1,12 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+// import Toastify from "toastify-js";
 
 function Nav() {
 	const { user, logout } = useContext(AuthContext);
-	const loginRedirect = useNavigate("/login");
+	const redirect = useNavigate();
+
 	const navContainerStyles: React.CSSProperties = {
 		height: "50px",
 		border: "solid 1px black",
@@ -41,11 +42,7 @@ function Nav() {
 					style={({ isActive }) => (isActive ? activeLink : {})}>
 					Users
 				</NavLink>
-				<NavLink
-					to="/login"
-					style={({ isActive }) => (isActive ? activeLink : {})}>
-					Login
-				</NavLink>
+
 				<NavLink
 					to="/register"
 					style={({ isActive }) => (isActive ? activeLink : {})}>
@@ -62,7 +59,7 @@ function Nav() {
 				{user ? (
 					<button onClick={logout}>Logout</button>
 				) : (
-					<button onClick={loginRedirect}>Login</button>
+					<button onClick={() => redirect("/login")}>Login</button>
 				)}
 			</p>
 		</nav>
