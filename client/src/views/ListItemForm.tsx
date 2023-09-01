@@ -1,4 +1,5 @@
-import { useState, FormEvent } from "react";
+/* eslint-disable prefer-const */
+import { useState, FormEvent, useEffect } from "react";
 import { NotOk, Item, Items } from "../@types";
 
 function ListItemForm({
@@ -10,7 +11,7 @@ function ListItemForm({
 }) {
 	const baseURL = import.meta.env.VITE_SERVER_BASE as string;
 	const [item, setItem] = useState("");
-	const [category, setCategory] = useState("");
+	const [category, setCategory] = useState([]);
 	const [short_description, setShort_Description] = useState("");
 	const [long_description, setLong_Description] = useState("");
 	const [offer_type, setOffer_Type] = useState("");
@@ -18,7 +19,12 @@ function ListItemForm({
 	const createItem = async () => {
 		const formData = new FormData();
 		formData.append("item", item);
-		formData.append("category", category);
+
+		// eslint-disable-next-line no-var
+		for (var i = 0; i < category.length; i++) {
+			formData.append("category[]", category[i]);
+		}
+		// formData.append("category []", category[i]);
 		formData.append("short_description", short_description);
 		formData.append("long_description", long_description);
 		formData.append("offer_type", offer_type);
@@ -51,6 +57,21 @@ function ListItemForm({
 		console.log({ item, short_description, long_description });
 		createItem().catch((e) => console.log(e)); // found this as an alternative to disabling eslint rule
 	};
+
+	const handleChange = (e: FormEvent<HTMLFormElement>) => {
+		if (e.target.checked === true) {
+			setCategory([...category, e.target.value]);
+		}
+		// eslint-disable-next-line prefer-const
+		else if (e.target.checked === false) {
+			let freshArray = category.filter((val) => val !== e.target.value);
+			setCategory([...freshArray]);
+		}
+	};
+
+	useEffect(() => {
+		console.log(category);
+	}, [category]);
 
 	return (
 		<>
@@ -102,77 +123,75 @@ function ListItemForm({
 					onChange={(e) => setOffer_Type(e.target.value)}
 				/>
 				<label htmlFor="radio">Swap</label> <br></br>
-				<button>List Item!</button>
-			</form>
-			<form>
 				<p>Choose your categories:</p>
 				<input
 					type="checkbox"
 					id="plants"
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
+					value="plants"
+					onChange={(e) => handleChange(e)}
 				/>
 				<label htmlFor="plants">Plants</label> <br></br>
 				<input
 					type="checkbox"
 					id="furniture"
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
+					value="furniture"
+					onChange={(e) => handleChange(e)}
 				/>
 				<label htmlFor="furniture">Furniture</label> <br></br>
 				<input
 					type="checkbox"
 					id="electronics"
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
+					value="electronics"
+					onChange={(e) => handleChange(e)}
 				/>
 				<label htmlFor="electronics">Electronics</label> <br></br>
 				<input
 					type="checkbox"
 					id="decorative"
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
+					value="decorative"
+					onChange={(e) => handleChange(e)}
 				/>
 				<label htmlFor="clothing">Decorative</label> <br></br>
 				<input
 					type="checkbox"
 					id="clothing & accessories"
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
+					value="clothing & accessories"
+					onChange={(e) => handleChange(e)}
 				/>
 				<label htmlFor="clothing & accessories">Clothing & accessories</label>{" "}
 				<br></br>
 				<input
 					type="checkbox"
 					id="Toys & games"
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
+					value="toys & games"
+					onChange={(e) => handleChange(e)}
 				/>
 				<label htmlFor="Toys & games">Toys & games</label>
 				<br></br>
 				<input
 					type="checkbox"
 					id="Music, films & books"
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
+					value="music, films & books"
+					onChange={(e) => handleChange(e)}
 				/>
 				<label htmlFor="Music, films & books">Music, films & books</label>{" "}
 				<br></br>
 				<input
 					type="checkbox"
 					id="pets"
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
+					value="pets"
+					onChange={(e) => handleChange(e)}
 				/>
 				<label htmlFor="pets">Pets</label> <br></br>
 				<input
 					type="checkbox"
-					id="other"
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
+					id="miscellaneous"
+					value="miscellaneous"
+					onChange={(e) => handleChange(e)}
 				/>
 				<label htmlFor="other">Miscellaneous</label>
 				<br></br>
+				<button>List Item!</button>
 			</form>
 		</>
 	);

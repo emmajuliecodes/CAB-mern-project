@@ -12,7 +12,6 @@ const itemSchema = new mongoose.Schema(
 		category: {
 			type: Array,
 			default: undefined,
-			required: true,
 		},
 		offer_type: { type: Array("Free", "Swap"), required: true },
 		images: {

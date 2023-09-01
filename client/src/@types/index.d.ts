@@ -18,11 +18,10 @@ export interface Item {
 	owner: string | User;
 	short_description: string;
 	long_description: string;
-	category: Category[];
+	category: Array[];
 	offer_type: [];
 	images: string;
 }
 
 export type Users = User[];
 export type Items = Item[];
-export type Categories = Category[];
