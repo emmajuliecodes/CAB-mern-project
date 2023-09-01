@@ -39,29 +39,29 @@ const createItem = async (req, res) => {
 		_id,
 		item,
 		available,
-		owner,
+		// owner,
 		short_description,
 		long_description,
 		category,
 		offer_type,
 	} = req.body;
 
-	if (!item || !available || !short_description) {
+	if (!item || !short_description) {
 		res.status(400).json({ error: "All fields must be filled out" });
 		return;
 	}
-	const result = await imageUpload(req.files, "item_images");
+	// const result = await imageUpload(req.files, "item_images");
 
 	const newItem = new ItemModel({
 		_id,
 		item,
 		available,
-		owner,
+		// owner,
 		short_description,
 		long_description,
 		category,
 		offer_type,
-		images: result,
+		// images: result,
 	});
 
 	try {
@@ -70,12 +70,12 @@ const createItem = async (req, res) => {
 			_id: result._id,
 			item: result.item,
 			available: result.available,
-			owner: result.owner,
+			// owner: result.owner,
 			short_description: result.short_description,
 			long_description: result.long_description,
 			category: result.category,
 			offer_type: result.offer_type,
-			images: result.images,
+			// images: result.images,
 		};
 		res.status(200).json(forFront);
 	} catch (e) {

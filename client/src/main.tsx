@@ -10,6 +10,7 @@ import Login from "./views/Login.tsx";
 import AppUsers from "./views/AppUsers.tsx";
 import Listings from "./views/Listings.tsx";
 import { AuthContextProvider } from "./context/AuthContext.tsx";
+import ListItem from "./views/ListItemForm.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
 					{
 						path: "/login",
 						element: <Login />,
+					},
+					{
+						path: "/listitem",
+						element: <ListItem />,
 					},
 				],
 			},

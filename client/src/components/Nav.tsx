@@ -62,6 +62,7 @@ function Nav() {
 					<button onClick={() => redirect("/login")}>Login</button>
 				)}
 			</p>
+			<button onClick={() => redirect("/listitem")}>List Item</button>
 		</nav>
 	);
 }

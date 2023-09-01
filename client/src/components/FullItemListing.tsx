@@ -4,11 +4,11 @@ type Props = {
 	item: Item;
 };
 
-function ItemCard({ item }: Props) {
+function ItemListing({ item }: Props) {
 	return (
 		item && (
 			<div
-				style={{ border: "solid 1px black", padding: "0 1em", width: "300px" }}>
+				style={{ border: "solid 1px black", padding: "0 1em", width: "500px" }}>
 				<p>
 					{item.item}
 					<br></br>
@@ -29,4 +29,4 @@ function ItemCard({ item }: Props) {
 	);
 }
 
-export default ItemCard;
+export default ItemListing;
