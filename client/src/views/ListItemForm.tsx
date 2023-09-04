@@ -39,10 +39,11 @@ function ListItemForm({
 			console.log(response);
 			if (response.ok) {
 				const result = (await response.json()) as Item;
-				alert("user created!");
+				alert("Item created!");
 				setItems([...items, { ...result }]);
 			} else {
 				const result = (await response.json()) as NotOk;
+				console.log(result, "result");
 				alert(result.error);
 			}
 		} catch (e) {

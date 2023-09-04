@@ -3,6 +3,7 @@ import "../App.css";
 import { useState, useEffect } from "react";
 import { NotOk, Items } from "../@types";
 import ItemCard from "../components/ItemCard";
+import { Link } from "react-router-dom";
 
 function AllItems() {
 	const baseURL = import.meta.env.VITE_SERVER_BASE as string;
@@ -47,7 +48,12 @@ function AllItems() {
 				<>
 					<h2>Available items</h2>
 					{items.map((i) => {
-						return <ItemCard key={i._id} item={i} />;
+						return (
+							<>
+								<ItemCard key={i._id} item={i} />;
+								<Link to={`/FullItemView/${i._id}`}>View item</Link>;
+							</>
+						);
 					})}
 				</>
 			)}

@@ -21,8 +21,6 @@ function ItemCard({ item }: Props) {
 					{item.short_description}
 					<br></br>
 					<label>{item.category}</label>
-
-					<button>View item</button>
 				</p>
 			</div>
 		)
