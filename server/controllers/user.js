@@ -46,8 +46,10 @@ const findUserByEmail = async (req, res) => {
 					username: foundUser.username,
 					_id: foundUser._id,
 					createdAt: foundUser.createdAt,
+					avatar: foundUser.avatar,
+					items: foundUser.items,
 				};
-				res.status(200).json(foundUser);
+				res.status(200).json(forFront);
 			} else {
 				res.status(404).json({ error: "No user found" });
 			}

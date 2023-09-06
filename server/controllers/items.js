@@ -1,4 +1,5 @@
 import { ItemModel } from "../models/items.js";
+import { imageUpload } from "../utilities/imageManagement.js";
 
 // ADD IN POPULATE OWNER, THEN SPECIFY WHAT WE WANT IT TO POPULATE WITH (USERNAME, EMAIL - path owner)
 
@@ -16,11 +17,12 @@ const findAllItems = async (req, res) => {
 					_id: item._id,
 					item: item.item,
 					available: item.available,
-					owner: item.owner,
+					// owner: item.owner.username,
 					short_description: item.short_description,
 					long_description: item.long_description,
 					category: item.category,
 					offer_type: item.offer_type,
+					images: item.images,
 				})
 			);
 			res.status(200).json(forFront);
@@ -50,7 +52,7 @@ const createItem = async (req, res) => {
 		res.status(400).json({ error: "All fields must be filled out" });
 		return;
 	}
-	// const result = await imageUpload(req.files, "item_images");
+	const result = await imageUpload(req.files, "item_images");
 
 	const newItem = new ItemModel({
 		_id,
@@ -61,7 +63,7 @@ const createItem = async (req, res) => {
 		long_description,
 		category,
 		offer_type,
-		// images: result,
+		images: result,
 	});
 
 	try {
@@ -75,7 +77,7 @@ const createItem = async (req, res) => {
 			long_description: result.long_description,
 			category: result.category,
 			offer_type: result.offer_type,
-			// images: result.images,
+			images: result.images,
 		};
 		res.status(200).json(forFront);
 	} catch (e) {
@@ -86,4 +88,34 @@ const createItem = async (req, res) => {
 	}
 };
 
-export { findAllItems, createItem };
+const findItemById = async (req, res) => {
+	const { id } = req.params;
+	if (id) {
+		try {
+			const foundItem = await ItemModel.findOne({ _id: id });
+
+			if (foundItem) {
+				const forFront = {
+					_id: foundItem._id,
+					item: foundItem.item,
+					available: foundItem.available,
+					owner: foundItem.owner,
+					short_description: foundItem.short_description,
+					long_description: foundItem.long_description,
+					category: foundItem.category,
+					offer_type: foundItem.offer_type,
+					images: foundItem.images,
+				};
+				res.status(200).json(forFront);
+			} else {
+				res.status(404).json({ error: "No item found" });
+			}
+		} catch (e) {
+			res.status(500).json({ error: "Something went wrong" });
+		}
+	} else {
+		res.status(400).json({ error: "valid ID must be included" });
+	}
+};
+
+export { findAllItems, createItem, findItemById };

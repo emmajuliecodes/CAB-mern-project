@@ -17,7 +17,7 @@ const userRouter = express.Router();
 
 userRouter.get("/testing", testResponse);
 userRouter.get("/all", findAllUsers);
-userRouter.get("/email/:email", findUserByEmail);
+userRouter.get("/profile/:email", findUserByEmail);
 userRouter.get("/me", jwtAuth, getMe);
 
 userRouter.post("/new", multerUpload.single("image"), createUser);

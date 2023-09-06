@@ -25,6 +25,7 @@ function UserCard({ user }: Props) {
 						<ul>
 							{user.items.map((i) => {
 								return <li key={i._id}>{i.item}</li>;
+								
 							})}
 						</ul>
 					</>

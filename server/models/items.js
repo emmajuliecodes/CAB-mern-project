@@ -6,7 +6,7 @@ const itemSchema = new mongoose.Schema(
 	{
 		item: { type: String, required: true },
 		available: { type: Boolean, default: true },
-		owner: { type: objectId, ref: "user" },
+		owner: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
 		short_description: { type: String, required: true },
 		long_description: { type: String, required: true },
 		category: {
@@ -18,6 +18,7 @@ const itemSchema = new mongoose.Schema(
 			type: String,
 			default:
 				"https://res.cloudinary.com/dv3hucyyc/image/upload/v1692694737/cab-mern-images/tortoise_ya3lt1.jpg",
+			required: true,
 		},
 	},
 	{ timestamps: true }

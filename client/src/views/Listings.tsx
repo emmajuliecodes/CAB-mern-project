@@ -50,8 +50,8 @@ function AllItems() {
 					{items.map((i) => {
 						return (
 							<>
-								<ItemCard key={i._id} item={i} />;
-								<Link to={`/FullItemView/${i._id}`}>View item</Link>;
+								<ItemCard key={i._id} item={i} />
+								<Link to={`/itemById/${i._id}`}>View item</Link>
 							</>
 						);
 					})}

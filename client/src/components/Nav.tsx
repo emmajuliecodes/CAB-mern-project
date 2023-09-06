@@ -9,50 +9,79 @@ function Nav() {
 
 	const navContainerStyles: React.CSSProperties = {
 		height: "50px",
-		border: "solid 1px black",
+		// border: "solid 1px black",
 		display: "flex",
-		justifyContent: "space-between",
+		justifyContent: "center",
 		alignItems: "center",
 		padding: "0 1em",
 	};
 
 	const linksContainerStyles: React.CSSProperties = {
 		display: "flex",
-		gap: "1em",
+
+		gap: "2em",
 	};
 
 	const activeLink: React.CSSProperties = {
-		color: "red",
-		fontWeight: "bold",
+		color: "darkcyan",
+		fontWeight: "bolder",
 	};
 
 	return (
 		<nav style={navContainerStyles}>
 			<div style={linksContainerStyles}>
-				<NavLink to="/" style={({ isActive }) => (isActive ? activeLink : {})}>
-					Home
-				</NavLink>
-				<NavLink
-					to="/listings"
-					style={({ isActive }) => (isActive ? activeLink : {})}>
-					Listings
-				</NavLink>
-				<NavLink
-					to="/users"
-					style={({ isActive }) => (isActive ? activeLink : {})}>
-					Users
-				</NavLink>
+				{!user && (
+					<>
+						<NavLink
+							to="/"
+							style={({ isActive }) => (isActive ? activeLink : {})}>
+							Home
+						</NavLink>
+						<NavLink
+							to="/listings"
+							style={({ isActive }) => (isActive ? activeLink : {})}>
+							Listings
+						</NavLink>
 
-				<NavLink
-					to="/register"
-					style={({ isActive }) => (isActive ? activeLink : {})}>
-					Register
-				</NavLink>
-				<NavLink
-					to="/profile"
-					style={({ isActive }) => (isActive ? activeLink : {})}>
-					Profile
-				</NavLink>
+						<NavLink
+							to="/register"
+							style={({ isActive }) => (isActive ? activeLink : {})}>
+							Register
+						</NavLink>
+
+						<NavLink
+							to="/about"
+							style={({ isActive }) => (isActive ? activeLink : {})}>
+							About
+						</NavLink>
+					</>
+				)}
+
+				{user && (
+					<>
+						<NavLink
+							to="/"
+							style={({ isActive }) => (isActive ? activeLink : {})}>
+							Home
+						</NavLink>
+						<NavLink
+							to="/listings"
+							style={({ isActive }) => (isActive ? activeLink : {})}>
+							Listings
+						</NavLink>
+
+						<NavLink
+							to="/profile"
+							style={({ isActive }) => (isActive ? activeLink : {})}>
+							Profile
+						</NavLink>
+						<NavLink
+							to="/about"
+							style={({ isActive }) => (isActive ? activeLink : {})}>
+							About
+						</NavLink>
+					</>
+				)}
 			</div>
 			<p>
 				{" "}
@@ -62,7 +91,11 @@ function Nav() {
 					<button onClick={() => redirect("/login")}>Login</button>
 				)}
 			</p>
-			<button onClick={() => redirect("/listitem")}>List Item</button>
+			{user ? (
+				<button onClick={() => redirect("/listitem")}>List Item</button>
+			) : (
+				<button onClick={() => redirect("/register")}>List Item</button>
+			)}
 		</nav>
 	);
 }

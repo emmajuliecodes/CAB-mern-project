@@ -13,6 +13,7 @@ export interface User {
 
 export interface Item {
 	_id: string;
+	id: string;
 	item: string;
 	available: boolean;
 	owner: string | User;

@@ -4,14 +4,21 @@ import { useNavigate } from "react-router-dom";
 
 interface DefaultValue {
 	user: null | User;
+	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 	login: (email: string, password: string) => Promise<void>;
 	logout: () => void;
+	register: (
+		email: string,
+		password: string,
+		username: string,
+		avatar: File | null
+	) => Promise<void>;
 }
 
-// interface SignupResult {
-// 	user: User;
-// 	token: string;
-// }
+interface RegisterResult {
+	user: User;
+	token: string;
+}
 
 interface LoginResult {
 	verified: boolean;
@@ -21,10 +28,16 @@ interface LoginResult {
 
 const initialValue: DefaultValue = {
 	user: null,
+	setUser: () => {
+		throw new Error("context not implemented.");
+	},
 	login: () => {
 		throw new Error("context not implemented.");
 	},
 	logout: () => {
+		throw new Error("context not implemented.");
+	},
+	register: () => {
 		throw new Error("context not implemented.");
 	},
 };
@@ -59,15 +72,54 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 				localStorage.setItem("user", JSON.stringify(result.user));
 				alert("login successful!");
 				redirect("/");
+				setTimeout(() => redirect("/"), 2000);
 			}
 		} catch (error) {
 			console.log("error", error);
 		}
 	};
 
+	const register = async (
+		email: string,
+		password: string,
+		username: string,
+		avatar: File | null
+	) => {
+		const formData = new FormData();
+		formData.append("username", username);
+		formData.append("email", email);
+		formData.append("password", password);
+		if (avatar) {
+			formData.append("image_url", avatar);
+		}
+		const requestOptions = {
+			method: "POST",
+			body: formData,
+		};
+		try {
+			const response = await fetch(`${baseURL}api/users/new`, requestOptions);
+			if (response.ok) {
+				const result = (await response.json()) as RegisterResult;
+				const { token } = result as RegisterResult;
+				localStorage.setItem("token", token);
+				localStorage.setItem("user", JSON.stringify(result.user));
+				alert("Signup Successful, logging in...");
+				setUser(result.user);
+				setTimeout(() => redirect("/"), 2000);
+			} else {
+				const result = (await response.json()) as NotOk;
+				alert(`Something went wrong - ${result.error}`);
+			}
+		} catch (e) {
+			alert(` ${e as Error}`);
+		}
+	};
+
 	const logout = () => {
 		setUser(null);
 		localStorage.removeItem("token");
+		alert("logout successful");
+		redirect("/");
 	};
 
 	const getActiveUser = async () => {
@@ -98,7 +150,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, login, logout }}>
+		<AuthContext.Provider value={{ user, setUser, login, logout, register }}>
 			{children}
 		</AuthContext.Provider>
 	);

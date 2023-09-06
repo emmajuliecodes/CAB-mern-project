@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import { NotOk, User, Users } from "../@types";
+import { useNavigate } from "react-router-dom";
 
 function CreateUserForm({
 	setUsers,
@@ -13,6 +14,7 @@ function CreateUserForm({
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [avatarFile, setAvatarFile] = useState<File | null>(null);
+	const redirect = useNavigate();
 
 	const createUser = async () => {
 		const formData = new FormData();
@@ -81,7 +83,7 @@ function CreateUserForm({
 				}}
 			/>
 			<br></br>
-			<button>Create!</button>
+			<button onClick={() => redirect("/profile")}>Register</button>
 		</form>
 	);
 }

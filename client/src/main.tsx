@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import "./index.css";
+import "./App.css";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Error404 from "./views/Error404.tsx";
 import Home from "./views/Home.tsx";
@@ -10,8 +11,11 @@ import Login from "./views/Login.tsx";
 import AppUsers from "./views/AppUsers.tsx";
 import Listings from "./views/Listings.tsx";
 import { AuthContextProvider } from "./context/AuthContext.tsx";
-import ListItem from "./views/ListItemForm.tsx";
-import ItemListing from "./components/FullItemListing.tsx";
+import ListItemForm from "./views/ListItemForm.tsx";
+import FullItemView from "./views/FullItemView.tsx";
+import UserProfile from "./views/Profile.tsx";
+import About from "./views/About.tsx";
+import Register from "./views/Register.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -48,7 +52,23 @@ const router = createBrowserRouter([
 					},
 					{
 						path: "/listitem",
-						element: <ListItem />,
+						element: <ListItemForm />,
+					},
+					{
+						path: "/itemById/:_id",
+						element: <FullItemView />,
+					},
+					{
+						path: "/about",
+						element: <About />,
+					},
+					{
+						path: "/profile",
+						element: <UserProfile />,
+					},
+					{
+						path: "/register",
+						element: <Register />,
 					},
 				],
 			},
