@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { Items, NotOk } from "../@types";
+import { Item, NotOk } from "../@types";
 
 function useFullItemFetch(_id: string) {
-	const [fullItem, setFullItem] = useState<Items>();
+	const [fullItem, setFullItem] = useState<Item>();
 	const fetchFullItem = async () => {
 		const baseURL = import.meta.env.VITE_SERVER_BASE as string;
 		try {
@@ -13,7 +13,7 @@ function useFullItemFetch(_id: string) {
 				console.log(result.error, response.status);
 			}
 			if (response.ok) {
-				const result = (await response.json()) as Items;
+				const result = (await response.json()) as Item;
 				setFullItem(result);
 				console.log(result, "result");
 			}

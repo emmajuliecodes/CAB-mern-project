@@ -21,6 +21,7 @@ function ItemCard({ item }: Props) {
 				<label style={{ height: "50px", backgroundColor: "green" }}>
 					{item.category}
 				</label>
+				
 			</div>
 		)
 	);

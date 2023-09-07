@@ -26,3 +26,5 @@ userRouter.post("/login", login);
 userRouter.post("/updatePassword", jwtAuth, updatePassword);
 
 export default userRouter;
+
+// add jwt auth to update user functions

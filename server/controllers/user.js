@@ -99,21 +99,31 @@ const createUser = async (req, res) => {
 //  Come back to update user
 
 const updateUser = async (req, res) => {
-	const { _id } = req.body;
-	console.log(req.body);
 	try {
-		const result = await UserModel.findByIdAndUpdate(req.body._id, req.body, {
-			new: true,
-		});
-		res.status(200).json(result);
+		if (req.file) {
+			const newAvatar = await imageUpload(req.file, "avatar");
+			const result = await UserModel.findByIdAndUpdate(
+				req.body._id,
+				{ ...req.body, image_url: newAvatar },
+				{
+					new: true,
+				}
+			);
+			res.status(200).json(result);
+			console.log(error);
+		} else {
+			const result = await UserModel.findByIdAndUpdate(req.body._id, req.body, {
+				new: true,
+			});
+			res.status(200).json(result);
+		}
 	} catch (e) {
 		res.status(500).json({ error: "Something went wrong..." });
 	}
 };
 
 const updatePassword = async (req, res) => {
-	const _id = req.user._id;
-	const { password: stringPassword } = req.body;
+	const { password: stringPassword, _id } = req.body;
 	try {
 		const hashedPassword = await encryptPassword(stringPassword);
 		console.log(stringPassword, _id, hashedPassword);
